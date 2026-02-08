@@ -464,6 +464,45 @@
             flex-shrink: 0;
         }
 
+        /* ── Feedback ── */
+        .feedback-section {
+            padding: 80px 0;
+        }
+
+        .feedback-card {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 56px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feedback-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-hero);
+        }
+
+        .feedback-content h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feedback-content p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 480px;
+            margin: 0 auto 28px;
+            line-height: 1.7;
+        }
+
         /* ── Footer ── */
         footer {
             padding: 40px 0;
@@ -723,6 +762,10 @@
                 <p>A new question every day across all our social channels.</p>
             </div>
             <div class="social-grid">
+                <a href="https://x.com/QuizWhizX" class="social-card">
+                    <svg viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    X / Twitter
+                </a>
                 <a href="https://bsky.app/profile/quizwhiz.bsky.social" class="social-card">
                     <svg viewBox="0 0 24 24" fill="#0085FF"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.6 6.453.785 2.823 3.592 3.753 6.149 3.5-4.375.742-7.718 2.548-2.908 8.782C8.23 27.186 10.145 21.395 12 18.96c1.855 2.434 3.382 7.74 8.158 3.543 4.81-6.234 1.467-8.04-2.908-8.782 2.557.253 5.364-.677 6.149-3.5.222-.804.6-5.763.6-6.453 0-.688-.139-1.86-.901-2.203-.659-.299-1.664-.621-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg>
                     Bluesky
@@ -737,6 +780,20 @@
                 </a>
             </div>
         </section>
+
+        <!-- Feedback -->
+        <section class="feedback-section">
+            <div class="feedback-card">
+                <div class="feedback-content">
+                    <h2>Help Shape QuizWhiz</h2>
+                    <p>Got an idea for a feature? Found a bug? We'd love to hear from you. Vote on existing ideas or suggest your own — no account needed.</p>
+                    <a href="https://quizwhiz.featurebase.app" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM11 5h2v4h-2zm0 6h2v2h-2z"/></svg>
+                        Share Your Feedback
+                    </a>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Footer -->
@@ -745,9 +802,11 @@
             <span class="footer-copy">&copy; 2026 QuizWhiz. Free to play, forever.</span>
             <div class="footer-links">
                 <a href="https://play.google.com/store/apps/details?id=com.macukadam.QuizWhiz">Google Play</a>
+                <a href="https://x.com/QuizWhizX">X / Twitter</a>
                 <a href="https://bsky.app/profile/quizwhiz.bsky.social">Bluesky</a>
                 <a href="https://mastodon.social/@QuizWhiz">Mastodon</a>
                 <a href="https://t.me/QuizWhizGame">Telegram</a>
+                <a href="https://quizwhiz.featurebase.app">Feedback</a>
             </div>
         </div>
     </footer>
