@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizWhiz - Share to TikTok</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #6C5CE7;
+            --primary-dark: #5A4BD1;
+            --primary-light: #8B7CF0;
+            --accent: #00D2D3;
+            --accent-glow: rgba(0, 210, 211, 0.15);
+            --bg: #0B0A14;
+            --bg-elevated: #13121F;
+            --bg-card: #1A1928;
+            --bg-card-hover: #211F35;
+            --text: #FFFFFE;
+            --text-secondary: #C4C5D7;
+            --text-muted: #7E7F96;
+            --border: #2A2940;
+            --gradient-hero: linear-gradient(135deg, #6C5CE7 0%, #00D2D3 100%);
+            --tiktok-red: #FE2C55;
+            --tiktok-cyan: #25F4EE;
+            --success: #55EFC4;
+            --warning: #FDCB6E;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── Nav ── */
+        nav {
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 10, 20, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(42, 41, 64, 0.5);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+
+        .nav-brand svg { width: 32px; height: 32px; }
+
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-back:hover { color: var(--text); }
+
+        /* ── Screens ── */
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        /* ── Screen 1: Login ── */
+        .login-screen {
+            text-align: center;
+            padding: 100px 0 80px;
+            position: relative;
+        }
+
+        .login-screen::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .tiktok-icon-large {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tiktok-icon-large svg { width: 44px; height: 44px; }
+
+        .login-screen h1 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .login-screen .gradient-text {
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
+        }
+
+        .btn-tiktok {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 40px;
+            border-radius: 14px;
+            background: var(--text);
+            color: #000;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-tiktok:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-tiktok svg { width: 24px; height: 24px; }
+
+        .skip-link {
+            display: block;
+            margin: 24px auto 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+
+        .skip-link:hover { color: var(--text-secondary); }
+
+        .login-features {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 72px;
+        }
+
+        .login-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        .login-feature-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(108, 92, 231, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* ── Screen 2: Create Post ── */
+        .create-screen {
+            padding: 48px 0 80px;
+        }
+
+        .create-layout {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .creator-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 32px;
+            padding: 20px 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .creator-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-hero);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .creator-info { flex: 1; }
+
+        .creator-name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .creator-handle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .auth-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 100px;
+            background: rgba(85, 239, 196, 0.12);
+            color: var(--success);
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        /* ── Preview ── */
+        .section-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .preview-card {
+            aspect-ratio: 3/4;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .preview-card-icon {
+            font-size: 1.5rem;
+            opacity: 0.6;
+        }
+
+        .preview-card-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .preview-card.active {
+            border-color: var(--primary-light);
+            background: var(--bg-card-hover);
+        }
+
+        /* ── Caption ── */
+        .caption-section { margin-bottom: 28px; }
+
+        .caption-wrapper {
+            position: relative;
+        }
+
+        .caption-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 16px;
+            padding-bottom: 36px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .caption-textarea:focus {
+            border-color: var(--primary-light);
+        }
+
+        .caption-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 16px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .caption-counter.warning { color: var(--warning); }
+        .caption-counter.danger { color: var(--tiktok-red); }
+
+        /* ── Form Controls ── */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-sublabel {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-left: 4px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.92rem;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='%237E7F96'%3E%3Cpath d='M6 8.825L1.175 4l.825-.825L6 7.175 10 3.175l.825.825z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            transition: border-color 0.2s;
+        }
+
+        .form-select:focus { border-color: var(--primary-light); }
+
+        .form-select option {
+            background: var(--bg-card);
+            color: var(--text);
+        }
+
+        /* ── Toggle switches ── */
+        .toggle-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .toggle-row.disabled {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+
+        .toggle-label {
+            font-size: 0.92rem;
+            font-weight: 500;
+        }
+
+        .toggle-sublabel {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--border);
+            border-radius: 28px;
+            transition: background 0.2s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--text);
+            left: 3px;
+            bottom: 3px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--primary);
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(20px);
+        }
+
+        .toggle-switch input:disabled + .toggle-slider {
+            cursor: not-allowed;
+            opacity: 0.4;
+        }
+
+        /* ── Commercial content ── */
+        .commercial-section {
+            margin-bottom: 28px;
+        }
+
+        .commercial-sub {
+            margin-top: 12px;
+            padding: 16px 20px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .commercial-sub.visible { display: block; }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ── Disclosure ── */
+        .disclosure-text {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 28px;
+            padding: 16px 20px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .disclosure-text a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .disclosure-text a:hover { text-decoration: underline; }
+
+        /* ── Post button ── */
+        .btn-post {
+            width: 100%;
+            padding: 18px;
+            border-radius: 14px;
+            background: var(--tiktok-red);
+            color: var(--text);
+            font-size: 1.05rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-post:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(254, 44, 85, 0.3);
+        }
+
+        .btn-post:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-post svg { width: 22px; height: 22px; }
+
+        /* ── Screen 3: Status ── */
+        .status-screen {
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+
+        .status-card {
+            max-width: 480px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 56px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-hero);
+        }
+
+        .status-spinner {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 28px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .status-spinner.done {
+            border-color: var(--success);
+            border-top-color: var(--success);
+            animation: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-check {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 28px;
+            background: rgba(85, 239, 196, 0.12);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-check.visible {
+            display: flex;
+        }
+
+        .status-check svg {
+            width: 28px;
+            height: 28px;
+            color: var(--success);
+        }
+
+        .status-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .status-message {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .status-steps {
+            text-align: left;
+            margin: 28px 0;
+        }
+
+        .status-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: color 0.3s;
+        }
+
+        .status-step.active { color: var(--text); }
+        .status-step.completed { color: var(--success); }
+
+        .step-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            flex-shrink: 0;
+            transition: background 0.3s;
+        }
+
+        .status-step.active .step-dot {
+            background: var(--primary);
+            box-shadow: 0 0 8px rgba(108, 92, 231, 0.5);
+        }
+
+        .status-step.completed .step-dot {
+            background: var(--success);
+        }
+
+        .publish-id {
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .publish-id.visible { display: block; }
+
+        .status-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 28px;
+            flex-wrap: wrap;
+            display: none;
+        }
+
+        .status-actions.visible { display: flex; }
+
+        .btn-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .btn-status:hover { transform: translateY(-2px); }
+
+        .btn-status-primary {
+            background: var(--primary);
+            color: var(--text);
+        }
+
+        .btn-status-secondary {
+            background: var(--bg-elevated);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        /* ── Footer ── */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: var(--text); }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .preview-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .login-features {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            .status-card {
+                padding: 40px 24px;
+            }
+            .footer-inner {
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .creator-header {
+                flex-wrap: wrap;
+            }
+            .auth-badge {
+                margin-top: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav>
+        <div class="container nav-inner">
+            <a href="/" class="nav-brand">
+                <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="15" stroke="url(#g)" stroke-width="2"/><text x="16" y="21" text-anchor="middle" font-size="16" font-weight="bold" fill="url(#g)">Q</text><defs><linearGradient id="g" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#6C5CE7"/><stop offset="1" stop-color="#00D2D3"/></linearGradient></defs></svg>
+                QuizWhiz
+            </a>
+            <a href="/" class="nav-back">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.354 3.354a.5.5 0 00-.708-.708l-5 5a.5.5 0 000 .708l5 5a.5.5 0 00.708-.708L5.707 8l4.647-4.646z"/></svg>
+                Back to QuizWhiz
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Screen 1: Login -->
+        <section id="screen-login" class="screen active login-screen">
+            <div class="tiktok-icon-large">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.52a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V12.6a8.2 8.2 0 005.58 2.17V11.3a4.85 4.85 0 01-3.77-1.83V6.69h3.77z" fill="var(--text)"/>
+                </svg>
+            </div>
+            <h1>Share Quiz Slideshows<br>on <span class="gradient-text">TikTok</span></h1>
+            <p class="login-description">
+                Connect your TikTok account to share QuizWhiz trivia slideshows with your followers. Upload quiz cards as photo posts directly to TikTok.
+            </p>
+            <button id="btn-login" class="btn-tiktok">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.52a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48V12.6a8.2 8.2 0 005.58 2.17V11.3a4.85 4.85 0 01-3.77-1.83V6.69h3.77z" fill="#000"/>
+                </svg>
+                Login with TikTok
+            </button>
+            <button id="btn-skip" class="skip-link">Skip to Demo</button>
+
+            <div class="login-features">
+                <div class="login-feature">
+                    <div class="login-feature-icon">&#128247;</div>
+                    <span>Photo slideshows</span>
+                </div>
+                <div class="login-feature">
+                    <div class="login-feature-icon">&#128300;</div>
+                    <span>10 trivia categories</span>
+                </div>
+                <div class="login-feature">
+                    <div class="login-feature-icon">&#9889;</div>
+                    <span>Automated posting</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 2: Create Post -->
+        <section id="screen-create" class="screen create-screen">
+            <div class="create-layout">
+
+                <!-- Creator info -->
+                <div class="creator-header">
+                    <div class="creator-avatar">Q</div>
+                    <div class="creator-info">
+                        <div class="creator-name">QuizWhiz Trivia</div>
+                        <div class="creator-handle">@quizwhiz_official</div>
+                    </div>
+                    <div class="auth-badge">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M10.28 3.22a.75.75 0 010 1.06l-5 5a.75.75 0 01-1.06 0l-2.5-2.5a.75.75 0 011.06-1.06L4.75 7.69l4.47-4.47a.75.75 0 011.06 0z"/></svg>
+                        Connected
+                    </div>
+                </div>
+
+                <!-- Slideshow preview -->
+                <div class="section-label">Slideshow Preview</div>
+                <div class="preview-grid">
+                    <div class="preview-card active">
+                        <div class="preview-card-icon">&#127912;</div>
+                        <div class="preview-card-label">Title Card</div>
+                    </div>
+                    <div class="preview-card">
+                        <div class="preview-card-icon">&#10067;</div>
+                        <div class="preview-card-label">Question 1</div>
+                    </div>
+                    <div class="preview-card">
+                        <div class="preview-card-icon">&#10067;</div>
+                        <div class="preview-card-label">Question 2</div>
+                    </div>
+                    <div class="preview-card">
+                        <div class="preview-card-icon">&#9989;</div>
+                        <div class="preview-card-label">Answers</div>
+                    </div>
+                </div>
+
+                <!-- Caption -->
+                <div class="caption-section">
+                    <div class="section-label">Caption</div>
+                    <div class="caption-wrapper">
+                        <textarea id="caption" class="caption-textarea" maxlength="2200">🧠 How well do you know science? Test yourself with today's QuizWhiz trivia!
+
+Swipe through to see the questions, then check the last slide for answers.
+
+#QuizWhiz #Trivia #ScienceQuiz #LearnSomethingNew #BrainTeaser</textarea>
+                        <span id="caption-counter" class="caption-counter">189/2200</span>
+                    </div>
+                </div>
+
+                <!-- Privacy Level -->
+                <div class="form-group">
+                    <label class="form-label">
+                        Who can view this post
+                        <span class="form-sublabel">(required)</span>
+                    </label>
+                    <select id="privacy-level" class="form-select">
+                        <option value="" disabled selected>Select privacy level...</option>
+                        <option value="PUBLIC_TO_EVERYONE">Everyone</option>
+                        <option value="MUTUAL_FOLLOW_FRIENDS">Friends</option>
+                        <option value="FOLLOWER_OF_CREATOR">Followers</option>
+                        <option value="SELF_ONLY">Only me</option>
+                    </select>
+                </div>
+
+                <!-- Interaction toggles -->
+                <div class="section-label">Interaction Settings</div>
+                <div class="toggle-group">
+                    <div class="toggle-row">
+                        <div>
+                            <div class="toggle-label">Allow Comment</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-comment" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row disabled">
+                        <div>
+                            <div class="toggle-label">Allow Duet</div>
+                            <div class="toggle-sublabel">Not available for photo posts</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" disabled>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row disabled">
+                        <div>
+                            <div class="toggle-label">Allow Stitch</div>
+                            <div class="toggle-sublabel">Not available for photo posts</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" disabled>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Commercial content disclosure -->
+                <div class="commercial-section">
+                    <div class="section-label">Commercial Content</div>
+                    <div class="toggle-row">
+                        <div>
+                            <div class="toggle-label">Disclose commercial content</div>
+                            <div class="toggle-sublabel">Turn on if this post promotes goods or services</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-commercial">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div id="commercial-sub" class="commercial-sub">
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="commercial-type" value="brand_organic">
+                                Your brand — You are promoting yourself or your own business
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="commercial-type" value="brand_partnership">
+                                Branded content — You are promoting another brand or a third party
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Disclosure text -->
+                <div class="disclosure-text">
+                    By posting, you agree to TikTok's
+                    <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>.
+                    Your content will be reviewed for community guideline compliance.
+                </div>
+
+                <!-- Post button -->
+                <button id="btn-post" class="btn-post" disabled>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5.694 12L2.299 3.272c-.236-.607.356-1.188.942-.982l.093.04 18 9a.75.75 0 01.097 1.283l-.097.058-18 9c-.619.31-1.279-.291-1.035-.932l.035-.078L5.694 12l-3.395 8.66L5.694 12zM4.402 4.54l2.61 6.71h6.627a.75.75 0 01.102 1.493l-.102.007H7.01l-2.61 6.71L19.322 12 4.401 4.54z"/></svg>
+                    Post to TikTok
+                </button>
+
+            </div>
+        </section>
+
+        <!-- Screen 3: Posting Status -->
+        <section id="screen-status" class="screen status-screen">
+            <div class="status-card">
+                <div id="status-spinner" class="status-spinner"></div>
+                <div id="status-check" class="status-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+
+                <h2 id="status-title" class="status-title">Publishing to TikTok</h2>
+                <p id="status-message" class="status-message">Please wait while we upload your slideshow...</p>
+
+                <div class="status-steps">
+                    <div id="step-1" class="status-step active">
+                        <span class="step-dot"></span>
+                        Initializing upload...
+                    </div>
+                    <div id="step-2" class="status-step">
+                        <span class="step-dot"></span>
+                        Uploading images (4 slides)...
+                    </div>
+                    <div id="step-3" class="status-step">
+                        <span class="step-dot"></span>
+                        Publishing post...
+                    </div>
+                    <div id="step-4" class="status-step">
+                        <span class="step-dot"></span>
+                        Complete!
+                    </div>
+                </div>
+
+                <div id="publish-id" class="publish-id">
+                    publish_id: 7483920571839204865
+                </div>
+
+                <div id="status-actions" class="status-actions">
+                    <a href="https://www.tiktok.com/@quizwhiz_official" target="_blank" rel="noopener" class="btn-status btn-status-primary">
+                        View on TikTok
+                    </a>
+                    <button id="btn-restart" class="btn-status btn-status-secondary">
+                        Create Another
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-inner">
+            <span class="footer-copy">&copy; 2026 QuizWhiz. Free to play, forever.</span>
+            <div class="footer-links">
+                <a href="https://play.google.com/store/apps/details?id=com.macukadam.QuizWhiz">Google Play</a>
+                <a href="https://bsky.app/profile/quizwhiz.bsky.social">Bluesky</a>
+                <a href="https://mastodon.social/@QuizWhiz">Mastodon</a>
+                <a href="https://t.me/QuizWhizGame">Telegram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // ── Config ──
+            const CLIENT_KEY = 'YOUR_CLIENT_KEY';
+            const REDIRECT_URI = 'https://quizwhiz-game.github.io/';
+            const SCOPES = 'video.publish,video.upload';
+
+            // ── Elements ──
+            const screenLogin = document.getElementById('screen-login');
+            const screenCreate = document.getElementById('screen-create');
+            const screenStatus = document.getElementById('screen-status');
+            const btnLogin = document.getElementById('btn-login');
+            const btnSkip = document.getElementById('btn-skip');
+            const btnPost = document.getElementById('btn-post');
+            const btnRestart = document.getElementById('btn-restart');
+            const caption = document.getElementById('caption');
+            const captionCounter = document.getElementById('caption-counter');
+            const privacyLevel = document.getElementById('privacy-level');
+            const toggleCommercial = document.getElementById('toggle-commercial');
+            const commercialSub = document.getElementById('commercial-sub');
+
+            // ── Screen switching ──
+            function showScreen(screen) {
+                [screenLogin, screenCreate, screenStatus].forEach(function(s) {
+                    s.classList.remove('active');
+                });
+                screen.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+
+            // ── OAuth redirect ──
+            btnLogin.addEventListener('click', function() {
+                var csrfState = 'tiktok_' + Math.random().toString(36).substring(2, 15);
+                var authUrl = 'https://www.tiktok.com/v2/auth/authorize/'
+                    + '?client_key=' + encodeURIComponent(CLIENT_KEY)
+                    + '&response_type=code'
+                    + '&scope=' + encodeURIComponent(SCOPES)
+                    + '&redirect_uri=' + encodeURIComponent(REDIRECT_URI)
+                    + '&state=' + encodeURIComponent(csrfState);
+                window.location.href = authUrl;
+            });
+
+            // ── Skip to demo ──
+            btnSkip.addEventListener('click', function() {
+                showScreen(screenCreate);
+            });
+
+            // ── Check for OAuth callback ──
+            var params = new URLSearchParams(window.location.search);
+            var code = params.get('code');
+            var state = params.get('state');
+
+            if (code && state && state.startsWith('tiktok_')) {
+                // Arrived from OAuth callback — show create screen
+                showScreen(screenCreate);
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            // ── Caption counter ──
+            function updateCounter() {
+                var len = caption.value.length;
+                captionCounter.textContent = len + '/2200';
+                captionCounter.classList.remove('warning', 'danger');
+                if (len > 2100) {
+                    captionCounter.classList.add('danger');
+                } else if (len > 1900) {
+                    captionCounter.classList.add('warning');
+                }
+            }
+
+            caption.addEventListener('input', updateCounter);
+            updateCounter();
+
+            // ── Privacy level → enable post button ──
+            privacyLevel.addEventListener('change', function() {
+                btnPost.disabled = !privacyLevel.value;
+            });
+
+            // ── Commercial content toggle ──
+            toggleCommercial.addEventListener('change', function() {
+                commercialSub.classList.toggle('visible', toggleCommercial.checked);
+            });
+
+            // ── Post button → status screen ──
+            btnPost.addEventListener('click', function() {
+                showScreen(screenStatus);
+                runPostingAnimation();
+            });
+
+            // ── Posting status animation ──
+            function runPostingAnimation() {
+                var spinner = document.getElementById('status-spinner');
+                var check = document.getElementById('status-check');
+                var title = document.getElementById('status-title');
+                var message = document.getElementById('status-message');
+                var publishId = document.getElementById('publish-id');
+                var actions = document.getElementById('status-actions');
+                var steps = [
+                    document.getElementById('step-1'),
+                    document.getElementById('step-2'),
+                    document.getElementById('step-3'),
+                    document.getElementById('step-4')
+                ];
+
+                // Reset state
+                spinner.style.display = '';
+                spinner.classList.remove('done');
+                check.classList.remove('visible');
+                publishId.classList.remove('visible');
+                actions.classList.remove('visible');
+                title.textContent = 'Publishing to TikTok';
+                message.textContent = 'Please wait while we upload your slideshow...';
+                steps.forEach(function(s) {
+                    s.classList.remove('active', 'completed');
+                });
+                steps[0].classList.add('active');
+
+                // Step 1 → Step 2 (1s)
+                setTimeout(function() {
+                    steps[0].classList.remove('active');
+                    steps[0].classList.add('completed');
+                    steps[1].classList.add('active');
+                    message.textContent = 'Uploading images to TikTok...';
+                }, 1000);
+
+                // Step 2 → Step 3 (3s)
+                setTimeout(function() {
+                    steps[1].classList.remove('active');
+                    steps[1].classList.add('completed');
+                    steps[2].classList.add('active');
+                    message.textContent = 'Finalizing your post...';
+                }, 3000);
+
+                // Step 3 → Complete (4.5s)
+                setTimeout(function() {
+                    steps[2].classList.remove('active');
+                    steps[2].classList.add('completed');
+                    steps[3].classList.add('active');
+                    steps[3].classList.add('completed');
+
+                    spinner.style.display = 'none';
+                    check.classList.add('visible');
+                    title.textContent = 'Posted Successfully!';
+                    message.textContent = 'Your quiz slideshow is now live on TikTok.';
+                    publishId.classList.add('visible');
+                    actions.classList.add('visible');
+                }, 4500);
+            }
+
+            // ── Restart ──
+            btnRestart.addEventListener('click', function() {
+                privacyLevel.value = '';
+                btnPost.disabled = true;
+                showScreen(screenCreate);
+            });
+        })();
+    </script>
+</body>
+</html>
